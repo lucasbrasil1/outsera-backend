@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.outsera.backend.dto.AwardIntervalsResponseDTO;
 import com.outsera.backend.dto.ProducerIntervalDTO;
 import com.outsera.backend.repository.MovieRepository;
+import com.outsera.backend.repository.WinnerProducerYearView;
 
 @Service
 public class ProducerService {
@@ -19,7 +20,7 @@ public class ProducerService {
     }
 
     public AwardIntervalsResponseDTO getAwardIntervals() {
-        List<Object[]> rows = movieRepository.findWinnerProducerYears();
+        List<WinnerProducerYearView> rows = movieRepository.findWinnerProducerYears();
 
         List<ProducerIntervalDTO> minList = new ArrayList<>();
         List<ProducerIntervalDTO> maxList = new ArrayList<>();
@@ -29,9 +30,9 @@ public class ProducerService {
         String currentProducer = null;
         int prevYear = -1;
 
-        for (Object[] row : rows) {
-            String producer = (String) row[0];
-            int year = (Integer) row[1];
+        for (WinnerProducerYearView row : rows) {
+            String producer = row.getProducer();
+            int year = row.getYear();
 
             if (producer.equals(currentProducer)) {
                 int interval = year - prevYear;
