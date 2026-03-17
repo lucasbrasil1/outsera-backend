@@ -51,9 +51,8 @@ public class DataLoader implements ApplicationRunner {
         var resource = new ClassPathResource(csvFile);
 
         if (!resource.exists()) {
-            log.error("Arquivo CSV '{}' nao encontrado. Encerrando aplicacao.", csvFile);
-            System.exit(1);
-            return;
+            log.error("Arquivo CSV '{}' nao encontrado. Falhando inicializacao da aplicacao.", csvFile);
+            throw new IllegalStateException("Arquivo CSV '" + csvFile + "' nao encontrado no classpath");
         }
 
         try (var reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8); var csvReader = new CSVReaderBuilder(reader)
